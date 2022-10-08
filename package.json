@@ -4,6 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
+    "deploy:goerli": "yarn build --network goerli && graph deploy --node https://api.thegraph.com/deploy/ outdoteth/billion-dollar-canvas-goerli",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ outdoteth/billion-dollar-canvas-subgraph",
     "create-local": "graph create --node http://localhost:8020/ outdoteth/billion-dollar-canvas-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ outdoteth/billion-dollar-canvas-subgraph",
