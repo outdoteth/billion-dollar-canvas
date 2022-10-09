@@ -62,25 +62,125 @@ export class ApprovalForAll__Params {
   }
 }
 
-export class StateChange extends ethereum.Event {
-  get params(): StateChange__Params {
-    return new StateChange__Params(this);
+export class AuctionCanvas extends ethereum.Event {
+  get params(): AuctionCanvas__Params {
+    return new AuctionCanvas__Params(this);
   }
 }
 
-export class StateChange__Params {
-  _event: StateChange;
+export class AuctionCanvas__Params {
+  _event: AuctionCanvas;
 
-  constructor(event: StateChange) {
+  constructor(event: AuctionCanvas) {
     this._event = event;
   }
 
-  get author(): Address {
-    return this._event.parameters[0].value.toAddress();
+  get canvasId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
   }
 
-  get data(): Bytes {
-    return this._event.parameters[1].value.toBytes();
+  get oldOwner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class BuyCanvas extends ethereum.Event {
+  get params(): BuyCanvas__Params {
+    return new BuyCanvas__Params(this);
+  }
+}
+
+export class BuyCanvas__Params {
+  _event: BuyCanvas;
+
+  constructor(event: BuyCanvas) {
+    this._event = event;
+  }
+
+  get canvasId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get oldOwner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get newOwner(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
+export class ChangeCanvasURI extends ethereum.Event {
+  get params(): ChangeCanvasURI__Params {
+    return new ChangeCanvasURI__Params(this);
+  }
+}
+
+export class ChangeCanvasURI__Params {
+  _event: ChangeCanvasURI;
+
+  constructor(event: ChangeCanvasURI) {
+    this._event = event;
+  }
+
+  get canvasId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get oldCanvasURI(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get newCanvasURI(): string {
+    return this._event.parameters[2].value.toString();
+  }
+}
+
+export class ChangePrice extends ethereum.Event {
+  get params(): ChangePrice__Params {
+    return new ChangePrice__Params(this);
+  }
+}
+
+export class ChangePrice__Params {
+  _event: ChangePrice;
+
+  constructor(event: ChangePrice) {
+    this._event = event;
+  }
+
+  get canvasId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get oldPrice(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get newPrice(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
+export class MintCanvas extends ethereum.Event {
+  get params(): MintCanvas__Params {
+    return new MintCanvas__Params(this);
+  }
+}
+
+export class MintCanvas__Params {
+  _event: MintCanvas;
+
+  constructor(event: MintCanvas) {
+    this._event = event;
+  }
+
+  get canvasId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get owner(): Address {
+    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -232,6 +332,35 @@ export class BillionDollarCanvas extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  setCanvasURI(canvasId: BigInt, uri: string): string {
+    let result = super.call(
+      "setCanvasURI",
+      "setCanvasURI(uint256,string):(string)",
+      [
+        ethereum.Value.fromUnsignedBigInt(canvasId),
+        ethereum.Value.fromString(uri)
+      ]
+    );
+
+    return result[0].toString();
+  }
+
+  try_setCanvasURI(canvasId: BigInt, uri: string): ethereum.CallResult<string> {
+    let result = super.tryCall(
+      "setCanvasURI",
+      "setCanvasURI(uint256,string):(string)",
+      [
+        ethereum.Value.fromUnsignedBigInt(canvasId),
+        ethereum.Value.fromString(uri)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toString());
   }
 
   supportsInterface(interfaceId: Bytes): boolean {
@@ -576,6 +705,78 @@ export class SetApprovalForAllCall__Outputs {
   _call: SetApprovalForAllCall;
 
   constructor(call: SetApprovalForAllCall) {
+    this._call = call;
+  }
+}
+
+export class SetCanvasURICall extends ethereum.Call {
+  get inputs(): SetCanvasURICall__Inputs {
+    return new SetCanvasURICall__Inputs(this);
+  }
+
+  get outputs(): SetCanvasURICall__Outputs {
+    return new SetCanvasURICall__Outputs(this);
+  }
+}
+
+export class SetCanvasURICall__Inputs {
+  _call: SetCanvasURICall;
+
+  constructor(call: SetCanvasURICall) {
+    this._call = call;
+  }
+
+  get canvasId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get uri(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+}
+
+export class SetCanvasURICall__Outputs {
+  _call: SetCanvasURICall;
+
+  constructor(call: SetCanvasURICall) {
+    this._call = call;
+  }
+
+  get value0(): string {
+    return this._call.outputValues[0].value.toString();
+  }
+}
+
+export class SetPriceCall extends ethereum.Call {
+  get inputs(): SetPriceCall__Inputs {
+    return new SetPriceCall__Inputs(this);
+  }
+
+  get outputs(): SetPriceCall__Outputs {
+    return new SetPriceCall__Outputs(this);
+  }
+}
+
+export class SetPriceCall__Inputs {
+  _call: SetPriceCall;
+
+  constructor(call: SetPriceCall) {
+    this._call = call;
+  }
+
+  get canvasId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get price(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class SetPriceCall__Outputs {
+  _call: SetPriceCall;
+
+  constructor(call: SetPriceCall) {
     this._call = call;
   }
 }

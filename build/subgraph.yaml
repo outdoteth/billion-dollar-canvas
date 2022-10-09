@@ -6,8 +6,9 @@ dataSources:
     name: BillionDollarCanvas
     network: goerli
     source:
-      address: "0xB16Cd9dB225E44d9FaBc3C1717a11949E497478A"
       abi: BillionDollarCanvas
+      address: "0x829adE3E5A61B21c9B79C9F890fd3C20da884d03"
+      startBlock: 7700000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -15,7 +16,6 @@ dataSources:
       entities:
         - Approval
         - ApprovalForAll
-        - StateChange
         - Transfer
       abis:
         - name: BillionDollarCanvas
@@ -25,8 +25,14 @@ dataSources:
           handler: handleApproval
         - event: ApprovalForAll(indexed address,indexed address,bool)
           handler: handleApprovalForAll
-        - event: StateChange(address,bytes)
-          handler: handleStateChange
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
+        - event: BuyCanvas(uint256,address,address)
+          handler: handleBuyCanvas
+        - event: ChangeCanvasURI(uint256,string,string)
+          handler: handleChangeCanvasURI
+        - event: ChangePrice(uint256,uint256,uint256)
+          handler: handleChangePrice
+        - event: MintCanvas(uint256,address)
+          handler: handleMintCanvas
       file: BillionDollarCanvas/BillionDollarCanvas.wasm

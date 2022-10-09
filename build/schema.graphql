@@ -1,6 +1,6 @@
-type ExampleEntity @entity {
+type PixelEntity @entity {
   id: ID!
-  count: BigInt!
-  owner: Bytes! # address
-  approved: Bytes! # address
+  price: BigInt!
+  owner: String!
+  tokenUri: String!
 }

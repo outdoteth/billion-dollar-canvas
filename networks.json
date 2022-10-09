@@ -1,8 +1,8 @@
 {
   "goerli": {
     "BillionDollarCanvas": {
-      "address": "0xB16Cd9dB225E44d9FaBc3C1717a11949E497478A",
-      "startBlock": 7500000
+      "address": "0x829adE3E5A61B21c9B79C9F890fd3C20da884d03",
+      "startBlock": 7700000
     }
   }
 }
